@@ -1,6 +1,9 @@
 # flecs-cpp_tools
 This repository contains a collection of useful tools built on top of the public Flecs API.
 
+## Building
+The library is header-only. Just copy the headers of the features you need to your project.
+
 ## Observer
 Observers allow an application to subscribe to component updates of specific entities.
 
