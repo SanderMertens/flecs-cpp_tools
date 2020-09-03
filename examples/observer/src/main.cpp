@@ -17,14 +17,14 @@ int main(int argc, char *argv[]) {
     auto e3 = ecs.entity("e3");
 
     // Create observer
-    flecs::observer<Position> o([](flecs::entity e, const Position& p) {
+    flecs::observer<Position> observer([](flecs::entity e, const Position& p) {
         std::cout << "Entity " << e.name() 
             << ": {" << p.x << ", " << p.y << "}" << std::endl;
     });
 
     // Listen to observable
-    o.observe(e1);
-    o.observe(e2);
+    observer.observe(e1);
+    observer.observe(e2);
 
     // Trigger observer
     e1.set<Position>({10, 20});
