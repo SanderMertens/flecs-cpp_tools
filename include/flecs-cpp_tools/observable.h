@@ -2,7 +2,7 @@
 #define FLECS_OBSERVABLE_H
 
 #include "flecs-cpp_tools/bake_config.h"
-#include <vector>
+#include <unordered_map>
 #include <functional>
 
 namespace flecs {
@@ -15,7 +15,15 @@ using observer_func = std::function<void(flecs::entity, const T&)>;
 template <typename T>
 class observer_invoker {
 public:
-    observer_invoker(observer_func<T>& func) : m_func(func) { }
+    observer_invoker(const observer_func<T>& func) : m_func(func), m_id(0) { }
+
+    void id(entity_t id) {
+        m_id = id;
+    }
+
+    entity_t id() const {
+        return m_id;
+    }
 
     // Static function that can be stored in observer data
     static void invoke(flecs::entity e, void *ptr, void *ctx) {
@@ -24,7 +32,8 @@ public:
         self->m_func(e, static_cast<T*>(ptr)[0]);
     }
 private:
-    observer_func<T>& m_func;
+    const observer_func<T>& m_func;
+    entity_t m_id;
 };
 
 // Observer data that is stored in list of observers
@@ -35,7 +44,7 @@ struct observer_data {
 
 // Trait that stores a list of observers
 struct Observable {
-    std::vector<observer_data> observers;
+    std::unordered_map<entity_t, observer_data> observers;
 };
 
 // Typed observer class which allows for observing multiple entities
@@ -51,6 +60,13 @@ public:
     }
 
     void observe(flecs::entity observable) {
+        if (!m_invoker->id()) {
+            // Create a unique id for the observer, so we can store it in a map.
+            // Register the id with the invoker, so that the observer object can
+            // be moved around on the stack.
+            m_invoker->id(ecs_new_id(observable.world().c_ptr()));
+        }
+
         // Create the observer data that will be added to the list of observers
         // of the observable.
         observer_data data;
@@ -61,11 +77,24 @@ public:
         Observable *o = observable.get_trait_mut<Observable, T>();
 
         // Add the observer to the list
-        o->observers.push_back(data);
+        o->observers[m_invoker->id()] = data;
+    }
+
+    void unobserve(flecs::entity observable) {
+        entity_t id = m_invoker->id();
+        if (id) {
+            Observable *o = observable.get_trait_mut<Observable, T>();
+            o->observers.erase(id);
+
+            // If observable has no more observers, remove trait
+            if (!o->observers.size()) {
+                observable.remove_trait<Observable, T>();
+            }
+        }
     }
 
 private:
-    observer_func<T> m_func;
+    const observer_func<T> m_func;
     observer_invoker<T>* m_invoker;
 };
 
@@ -101,7 +130,7 @@ public:
                 for (auto i : it) {
                     // Iterate observers, pass data to each one
                     for (auto observer : observables[i].observers) {
-                        observer.invoke( it.entity(i), data[i], observer.ctx );
+                        observer.second.invoke( it.entity(i), data[i], observer.second.ctx ); 
                     }
                 }
             });
