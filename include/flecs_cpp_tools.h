@@ -5,6 +5,7 @@
 #include "flecs-cpp_tools/bake_config.h"
 #include "flecs-cpp_tools/observable.h"
 #include "flecs-cpp_tools/timers.h"
+#include "flecs-cpp_tools/dump.h"
 
 #endif
 

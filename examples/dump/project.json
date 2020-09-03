@@ -1,0 +1,13 @@
+{
+    "id": "dump",
+    "type": "application",
+    "value": {
+        "author": "Jane Doe",
+        "description": "A simple hello world flecs application",
+        "use": [
+            "flecs",
+            "flecs.cpp_tools"
+        ],
+        "language": "c++"
+    }
+}
