@@ -2,8 +2,6 @@
 #define FLECS_TIMERS_H
 
 #include "flecs-cpp_tools/bake_config.h"
-#include <vector>
-#include <functional>
 
 namespace flecs {
 
