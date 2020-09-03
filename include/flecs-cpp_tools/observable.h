@@ -43,7 +43,8 @@ template<typename T>
 class observer final {
 public:
     observer(observer_func<T> func) 
-        : m_invoker(new observer_invoker<T>(func)) { }
+        : m_func(func)
+        , m_invoker(new observer_invoker<T>(m_func)) { }
 
     ~observer() {
         delete m_invoker;
@@ -64,6 +65,7 @@ public:
     }
 
 private:
+    observer_func<T> m_func;
     observer_invoker<T>* m_invoker;
 };
 
