@@ -5,11 +5,6 @@
 
 namespace flecs {
 
-struct Timeout {
-    float timeout;
-    float t;
-};
-
 // Trait that adds a component after t seconds
 struct AddTimer {
     float timeout;
