@@ -35,22 +35,22 @@ e.set<flecs::DeleteTimer>({15});
 Dump is a utility that prints information about an entity to the console
 
 ```cpp
-    auto Thing = ecs.entity("Thing")
-        .set<Mass>({100});
+auto Thing = ecs.entity("Thing")
+    .set<Mass>({100});
 
-    auto Animal = ecs.entity("Animal")
-        .add_instanceof(Thing);  
+auto Animal = ecs.entity("Animal")
+    .add_instanceof(Thing);  
 
-    auto Dog = ecs.entity("Dog")
-        .add_instanceof(Animal);           
+auto Dog = ecs.entity("Dog")
+    .add_instanceof(Animal);           
 
-    auto e1 = ecs.entity("Beethoven")
-        .add_instanceof(Dog)
-        .set<Position>({10, 20})
-        .set<Velocity>({1, 2});
+auto e1 = ecs.entity("Beethoven")
+    .add_instanceof(Dog)
+    .set<Position>({10, 20})
+    .set<Velocity>({1, 2});
 
-    // Dump entity
-    flecs::dump(e1);
+// Dump entity
+flecs::dump(e1);
 ```
 Output:
 ```
