@@ -1,7 +1,7 @@
 #ifndef FLECS_DUMP_H
 #define FLECS_DUMP_H
 
-#include "flecs-cpp_tools/bake_config.h"
+#include <flecs.h>
 
 namespace flecs {
 

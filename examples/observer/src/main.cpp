@@ -33,9 +33,21 @@ int main(int argc, char *argv[]) {
     // This won't trigger the observer
     e3.set<Position>({50, 60});
 
+    // Disable observer
+    observer.disable();
+
+    // Won't trigger the observer, as it is disabled
+    e1.set<Position>({70, 80});
+
+    // Re-enable observer
+    observer.enable();
+
+    // Will trigger observer again
+    e1.set<Position>({70, 80});
+
     // Unobserve e2
     observer.unobserve(e2);
 
-    // Will no longer trigger observer
-    e2.set<Position>({70, 80});
+    // Will no longer trigger observer, as it is no longer being observed
+    e2.set<Position>({90, 100});
 }

@@ -1,7 +1,7 @@
 #ifndef FLECS_TIMERS_H
 #define FLECS_TIMERS_H
 
-#include "flecs-cpp_tools/bake_config.h"
+#include <flecs.h>
 
 namespace flecs {
 
