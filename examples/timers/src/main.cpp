@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
     
     ecs.import<flecs::timers>();
 
-    // Create entity with two components
+    // Create entity with Position
     auto e = ecs.entity()
         .set<Position>({10, 20});
 
